@@ -114,6 +114,23 @@ body {
   padding: 10px;
 }
 
+header {
+  margin-bottom: 7px;
+}
+
+header h1 {
+  display:inline;
+}
+
+header nav {
+  display:inline;
+}
+
+header nav a {
+  padding-left: 7px;
+  text-decoration: underline;
+}
+
 .button-group {
   display: flex;
   flex-direction: row;
