@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { IPitchMap } from "@/common/types"
 import { shuffleArray } from '@/common/utils/helpers';
-import { pitchMapsIncludes, togglePitchMap, getPitchMapDisplay } from "@/common/utils/music-theory"
+import { pitchMapsIncludes, togglePitchMap } from "@/common/utils/music-theory"
 
 // export enum DISPLAY_MODE {
 //     PITCH_NAME,
