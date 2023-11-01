@@ -21,7 +21,7 @@ export default function RootLayout({
           <h1>Toolbox:</h1>
           <nav>
             <Link href="/">Home</Link>
-            <Link href="/quizes">Quizes</Link>
+            <Link href="/quizzes">Quizzes</Link>
           </nav>
         </header>
         <main>

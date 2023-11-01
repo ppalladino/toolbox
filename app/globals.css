@@ -110,15 +110,29 @@ meter {
 body {
   background-color: rgb(41, 41, 41);
   color: white;
-  font-family: monospace;
+  /* font-family: monospace; */
+  font-family: 'Arial', sans-serif;
   padding: 10px;
+  font-size: 15px;
+}
+
+h1, h2 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 20px;
 }
 
 header {
   margin-bottom: 7px;
 }
 
-header h1 {
+header h1, h2 {
   display:inline;
 }
 
@@ -131,6 +145,22 @@ header nav a {
   text-decoration: underline;
 }
 
+button {
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 7px;
+  /* margin: 2px; */
+  border: none;
+  cursor: pointer;
+  min-width: 25px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #555;
+}
+
 .button-group {
   display: flex;
   flex-direction: row;
@@ -139,7 +169,7 @@ header nav a {
   padding: 5px;;
 }
 
-button {
+.button-group button {
   border-radius: 5px;
   background-color: black;
   color: white;
@@ -149,7 +179,7 @@ button {
   min-width: 25px;
 }
 
-button.selected {
+.button-group button.selected {
   background-color: white;
   color: black;
 }

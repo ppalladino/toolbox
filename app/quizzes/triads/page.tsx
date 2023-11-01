@@ -41,7 +41,7 @@ export default function TriadsPage() {
 
   return (
     <div>
-      <h1>Traids Quiz </h1>
+      <h1>Triads Quiz</h1>
       <div>
         <h2>Question Pool:</h2>
         <KeysPicker onChange={handleQuestionPoolChange} keys={pitchMaps}/>
