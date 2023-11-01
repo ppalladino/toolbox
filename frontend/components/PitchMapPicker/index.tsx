@@ -39,7 +39,7 @@ export default function PitchMapPicker({
     const handleClick = (pitchMap: IPitchMap) => () => {
         // const selected = togglePitchMap(selectedPitchMaps, pitchMap)
         // setSelectedPitchMaps(selected)
-        onChange([...selected, pitchMap])
+        onChange(togglePitchMap(selected, pitchMap))
     }
 
     const getKeyClass = (pitchMap: IPitchMap):string => {

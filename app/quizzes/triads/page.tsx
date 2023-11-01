@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { IPitchMap } from "@/common/types"
 import { pitchMaps, getMajorTriadPitchMaps, pitchMapsAreSimilar } from "@/common/utils/music-theory"
 import PitchMapPicker from "@/frontend/components/PitchMapPicker"
@@ -11,15 +11,22 @@ interface IAnswer {
   userAnswer: IPitchMap[]
 }
 
+const POOL_STORAGE_KEY = 'quizzes:triads:question-pool'
+
 export default function TriadsPage() {
-  const [questionPool, setQuestionPool] = useState<IPitchMap[]>([...pitchMaps])
-  const [question, setQuestion] = useState<IPitchMap>(getRandomElement(pitchMaps))
-  const [correctAnswer, setCorrectAnswer] = useState<IPitchMap[]>([])
+  const storedQuestionPool = localStorage.getItem(POOL_STORAGE_KEY)
+  const initialQuestionPool = storedQuestionPool ? JSON.parse(storedQuestionPool) : [...pitchMaps]
+  const initialQuestion = getRandomElement<IPitchMap>(initialQuestionPool)
+
+  const [questionPool, setQuestionPool] = useState<IPitchMap[]>(initialQuestionPool)
+  const [question, setQuestion] = useState<IPitchMap>(initialQuestion)
+  const [correctAnswer, setCorrectAnswer] = useState<IPitchMap[]>(getMajorTriadPitchMaps(initialQuestion))
   const [userAnswer, setUserAnswer] = useState<IPitchMap[]>([])
   const [showResults, setShowResult] = useState<boolean>(false)
-
+  const [randomOrderedPitchMaps, setRandomOrderedPitchMaps] = useState<IPitchMap[]>(shuffleArray<IPitchMap>(pitchMaps))
 
   const handleQuestionPoolChange = (pool: IPitchMap[]) => {
+    localStorage.setItem(POOL_STORAGE_KEY, JSON.stringify(pool));
     setQuestionPool(pool)
   }
 
@@ -35,6 +42,7 @@ export default function TriadsPage() {
   const handleNextClick = () => {
     const questionRootPitch = getRandomElement(questionPool)
     const questionTriad = getMajorTriadPitchMaps(questionRootPitch)
+    setRandomOrderedPitchMaps(shuffleArray<IPitchMap>(pitchMaps))
     setQuestion(questionRootPitch)
     setUserAnswer([])
     setCorrectAnswer(questionTriad)
@@ -52,28 +60,28 @@ export default function TriadsPage() {
           {
             showResults ? (
               <PitchMapResults 
-                visible={pitchMaps}
+                visible={randomOrderedPitchMaps}
                 chosen={userAnswer || []}
                 expected={correctAnswer || []}
               />
              ) : (
               <PitchMapPicker 
                 onChange={handleUserAnswerChange} 
-                visible={pitchMaps} 
+                visible={randomOrderedPitchMaps} 
                 selected={userAnswer}
               />
             )
           }
         </p>
       </section>
-      <section>
+      <section className="cta-row">
         <button onClick={handleSubmitClick}>submit</button>
         <button onClick={handleNextClick}>next</button>
       </section>
       <section>
         <h2>Settings</h2>
         <strong>Question Pool</strong>
-        {/* <PitchMapPicker onChange={handleQuestionPoolChange} visible={pitchMaps}/> */}
+        <PitchMapPicker onChange={handleQuestionPoolChange} visible={pitchMaps} selected={questionPool}/>
       </section>
     </section>
     

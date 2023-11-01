@@ -210,3 +210,14 @@ button:hover {
   background-color: yellow;
   color: black;
 }
+
+section.cta-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  background-color: black;
+  padding: 5px;
+}
+section.cta-row button{
+  margin-right: 10px;
+}
