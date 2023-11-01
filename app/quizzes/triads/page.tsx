@@ -2,57 +2,80 @@
 import { useState } from 'react'
 import { IPitchMap } from "@/common/types"
 import { pitchMaps, getMajorTriadPitchMaps, pitchMapsAreSimilar } from "@/common/utils/music-theory"
-import KeysPicker from "@/frontend/components/KeysPicker"
+import PitchMapPicker from "@/frontend/components/PitchMapPicker"
+import PitchMapResults from '@/frontend/components/PitchMapResults'
 import { getRandomElement, shuffleArray } from '@/common/utils/helpers'
+
+interface IAnswer {
+  correctAnswer: IPitchMap[],
+  userAnswer: IPitchMap[]
+}
 
 export default function TriadsPage() {
   const [questionPool, setQuestionPool] = useState<IPitchMap[]>([...pitchMaps])
   const [question, setQuestion] = useState<IPitchMap>(getRandomElement(pitchMaps))
-  const [answer, setAnswer] = useState<IPitchMap[]>([])
-  const [result, setResult] = useState<string>('')
+  const [correctAnswer, setCorrectAnswer] = useState<IPitchMap[]>([])
+  const [userAnswer, setUserAnswer] = useState<IPitchMap[]>([])
+  const [showResults, setShowResult] = useState<boolean>(false)
 
 
   const handleQuestionPoolChange = (pool: IPitchMap[]) => {
     setQuestionPool(pool)
   }
 
-  const handleAnswerChange = (answer: IPitchMap[]) => {
-    setAnswer(answer)
+  const handleUserAnswerChange = (answer: IPitchMap[]) => {
+    console.log({answer})
+    setUserAnswer(answer)
   }
 
   const handleSubmitClick = () => {
-   const triad = getMajorTriadPitchMaps(question)
-   if(answer.length !== 3) {
-    setResult("A triad has three notes, not " + answer.length)
-    return
-   }
-
-   if(!pitchMapsAreSimilar(triad, answer)) {
-    setResult("Answer is not the correct triad, try again.")
-    return
-   }
-
-   // They got it!
-    setResult("Correct! Try another")
-    setQuestion(getRandomElement(pitchMaps))
-    setAnswer([])
+    setShowResult(true)
   }
 
+  const handleNextClick = () => {
+    const questionRootPitch = getRandomElement(questionPool)
+    const questionTriad = getMajorTriadPitchMaps(questionRootPitch)
+    setQuestion(questionRootPitch)
+    setUserAnswer([])
+    setCorrectAnswer(questionTriad)
+    setShowResult(false)
+  }
 
   return (
-    <div>
-      <h1>Triads Quiz</h1>
-      <div>
-        <h2>Question Pool:</h2>
-        <KeysPicker onChange={handleQuestionPoolChange} keys={pitchMaps}/>
-        <h2>Result:</h2>
-        {result}
-        <h2>Question:</h2>
-        {question.preferedNoteName}
-        <KeysPicker onChange={handleAnswerChange} keys={pitchMaps} selectedKeys={answer}/>
+    <section>
+      <header>
+        <h1>Triads Quiz</h1>
+      </header> 
+      <section>
+        <p>Select the notes in a <strong>{question.preferedNoteName} major</strong> triad.</p>
+        <p>
+          {
+            showResults ? (
+              <PitchMapResults 
+                visible={pitchMaps}
+                chosen={userAnswer || []}
+                expected={correctAnswer || []}
+              />
+             ) : (
+              <PitchMapPicker 
+                onChange={handleUserAnswerChange} 
+                visible={pitchMaps} 
+                selected={userAnswer}
+              />
+            )
+          }
+        </p>
+      </section>
+      <section>
         <button onClick={handleSubmitClick}>submit</button>
-      </div>
-    </div>
+        <button onClick={handleNextClick}>next</button>
+      </section>
+      <section>
+        <h2>Settings</h2>
+        <strong>Question Pool</strong>
+        {/* <PitchMapPicker onChange={handleQuestionPoolChange} visible={pitchMaps}/> */}
+      </section>
+    </section>
     
   )
 }

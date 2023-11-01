@@ -6,17 +6,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <>
+    <section>
       <header>
-        <h2>Quizzes:</h2>
+        <strong>Quizzes:</strong>
         <nav>
           <Link href="/quizzes/triads">Triads</Link>
         </nav>
       </header>
-          
-          <div>
-          {children}
-          </div> 
-    </>
+      {children}
+    </section>
   )
 }

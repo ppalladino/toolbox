@@ -113,7 +113,19 @@ body {
   /* font-family: monospace; */
   font-family: 'Arial', sans-serif;
   padding: 10px;
-  font-size: 15px;
+  font-size: 18px;
+}
+
+section {
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+header {
+  margin-bottom: 10px;
 }
 
 h1, h2 {
@@ -132,10 +144,6 @@ header {
   margin-bottom: 7px;
 }
 
-header h1, h2 {
-  display:inline;
-}
-
 header nav {
   display:inline;
 }
@@ -145,10 +153,14 @@ header nav a {
   text-decoration: underline;
 }
 
+strong {
+  font-weight: bold;
+}
+
 button {
   border-radius: 5px;
-  background-color: #333;
-  color: #fff;
+  background-color: #fff;
+  color: #333;
   padding: 5px 7px;
   /* margin: 2px; */
   border: none;
@@ -184,3 +196,17 @@ button:hover {
   color: black;
 }
 
+.button-group button.correct {
+  background-color: green;
+  color: black;
+}
+
+.button-group button.incorrect {
+  background-color: red;
+  color: black;
+}
+
+.button-group button.correct-non-selected {
+  background-color: yellow;
+  color: black;
+}
