@@ -1,12 +1,18 @@
 import { NOTE, PITCH, INTERVAL, ACCIDENTAL } from '@/common/enums'
 import { IPitchMap } from '@/common/types'
 
+export enum PITCH_MAP_DISPLAY_MODE {
+  PITCH_NAME,
+  PREFERRED_NOTE_NAME,
+  KEY_CONTEXTED_NOTE_NAME
+}
+
 export const pitchMaps: IPitchMap[] = [
   {
     pitch: PITCH.C,
     notes: [NOTE.C],
     pitchName: 'C',
-    preferedNoteName: 'C',
+    preferredNoteName: 'C',
     notesName: ['C'],
     keyAccidental: ACCIDENTAL.NATURAL
   },
@@ -14,7 +20,7 @@ export const pitchMaps: IPitchMap[] = [
     pitch: PITCH.C$_Db,
     notes: [NOTE.C$, NOTE.Db],
     pitchName: 'C#/Db',
-    preferedNoteName: 'Db',
+    preferredNoteName: 'Db',
     notesName: ['C#', 'Db'],
     keyAccidental: ACCIDENTAL.FLAT  
   },
@@ -22,7 +28,7 @@ export const pitchMaps: IPitchMap[] = [
     pitch: PITCH.D,
     notes: [NOTE.D],
     pitchName: 'D',
-    preferedNoteName: 'D',
+    preferredNoteName: 'D',
     notesName: ['D'],
     keyAccidental: ACCIDENTAL.SHARP
   },
@@ -30,7 +36,7 @@ export const pitchMaps: IPitchMap[] = [
     pitch: PITCH.D$_Eb,
     notes: [NOTE.D$, NOTE.Eb],
     pitchName: 'D#/Eb',
-    preferedNoteName: 'Eb',
+    preferredNoteName: 'Eb',
     notesName: ['D#', 'Eb'],
     keyAccidental: ACCIDENTAL.FLAT
   },
@@ -38,7 +44,7 @@ export const pitchMaps: IPitchMap[] = [
     pitch: PITCH.E,
     notes: [NOTE.E],
     pitchName: 'E',
-    preferedNoteName: 'E',
+    preferredNoteName: 'E',
     notesName: ['E'],
     keyAccidental: ACCIDENTAL.SHARP
   },
@@ -46,7 +52,7 @@ export const pitchMaps: IPitchMap[] = [
     pitch: PITCH.F,
     notes: [NOTE.F],
     pitchName: 'F',
-    preferedNoteName: 'F',
+    preferredNoteName: 'F',
     notesName: ['F'],
     keyAccidental: ACCIDENTAL.FLAT
   },
@@ -54,7 +60,7 @@ export const pitchMaps: IPitchMap[] = [
     pitch: PITCH.F$_Gb,
     notes: [NOTE.F$, NOTE.Gb],
     pitchName: 'F#/Gb',
-    preferedNoteName: 'Gb',
+    preferredNoteName: 'Gb',
     notesName: ['F#', 'Gb'],
     keyAccidental: ACCIDENTAL.FLAT    
   },
@@ -62,7 +68,7 @@ export const pitchMaps: IPitchMap[] = [
     pitch: PITCH.G,
     notes: [NOTE.G],
     pitchName: 'G',
-    preferedNoteName: 'G',
+    preferredNoteName: 'G',
     notesName: ['G'],
     keyAccidental: ACCIDENTAL.SHARP
   },
@@ -70,7 +76,7 @@ export const pitchMaps: IPitchMap[] = [
     pitch: PITCH.G$_Ab,
     notes: [NOTE.G$, NOTE.Ab],
     pitchName: 'G#/Ab',
-    preferedNoteName: 'Ab',
+    preferredNoteName: 'Ab',
     notesName: ['G#', 'Ab'],
     keyAccidental: ACCIDENTAL.FLAT
   },
@@ -78,7 +84,7 @@ export const pitchMaps: IPitchMap[] = [
     pitch: PITCH.A,
     notes: [NOTE.A],
     pitchName: 'A',
-    preferedNoteName: 'A',
+    preferredNoteName: 'A',
     notesName: ['A'],
     keyAccidental: ACCIDENTAL.SHARP
   },
@@ -86,7 +92,7 @@ export const pitchMaps: IPitchMap[] = [
     pitch: PITCH.A$_Bb,
     notes: [NOTE.A$, NOTE.Bb],
     pitchName: 'A#/Bb',
-    preferedNoteName: 'Bb',
+    preferredNoteName: 'Bb',
     notesName: ['A#', 'Bb'],
     keyAccidental: ACCIDENTAL.FLAT
   },
@@ -94,11 +100,27 @@ export const pitchMaps: IPitchMap[] = [
     pitch: PITCH.B,
     notes: [NOTE.B],
     pitchName: 'B',
-    preferedNoteName: 'B',
+    preferredNoteName: 'B',
     notesName: ['B'],
     keyAccidental: ACCIDENTAL.SHARP
   }  
 ]
+
+export const getPitchMapDisplay = (mode: PITCH_MAP_DISPLAY_MODE, pitchMap: IPitchMap, keyRootPitchMap?: IPitchMap):string => {
+  switch (mode) {
+    case PITCH_MAP_DISPLAY_MODE.PITCH_NAME:
+      return pitchMap.pitchName
+    case PITCH_MAP_DISPLAY_MODE.PREFERRED_NOTE_NAME:
+      return pitchMap.preferredNoteName
+    case PITCH_MAP_DISPLAY_MODE.KEY_CONTEXTED_NOTE_NAME:
+      if(keyRootPitchMap) {
+        return getKeyContextedNoteName(keyRootPitchMap, pitchMap)
+      }
+      return pitchMap.preferredNoteName
+    default:
+      return pitchMap.preferredNoteName
+  }
+}
 
 export const pitchMapsIncludes = (haystack: IPitchMap[], needle: IPitchMap):boolean => !!haystack.find(h => h.pitch === needle.pitch)
 export const removePitchMap = (pitchMaps: IPitchMap[], pitchMap: IPitchMap):IPitchMap[] => pitchMaps.filter(p => p.pitch !== pitchMap.pitch)
@@ -121,18 +143,7 @@ export const pitchMapsAreSimilar = (pitchMapsA: IPitchMap[], pitchMapsB: IPitchM
   return true
 }
 
-// export const getPitchMapDisplay = (field: PITCH_MAP_FIELD, pitchMap: IPitchMap):string => {
-//   switch (field) {
-//     case PITCH_MAP_FIELD.PITCH_NAME:
-//       return pitchMap.pitchName
-//     case PITCH_MAP_FIELD.PREFERED_NOTE_NAME:
-//       return pitchMap.preferedNoteName
-//     default:
-//       return pitchMap.preferedNoteName
-//   }
-// }
-
-export const getNoteNameFromPitchMap = (keyRootPitchMap: IPitchMap, pitchMap: IPitchMap): string => {
+export const getKeyContextedNoteName = (keyRootPitchMap: IPitchMap, pitchMap: IPitchMap): string => {
   if(pitchMap.notesName.length > 1) {
     return keyRootPitchMap.keyAccidental === ACCIDENTAL.FLAT ? pitchMap.notesName[1] : pitchMap.notesName[0]
   }
@@ -148,11 +159,11 @@ const addIntervalToPitchMap = (startingPitchMap: IPitchMap, interval: INTERVAL):
   return pitchMaps[intervalIndex]
 }
 
-const getChordPitcheMaps = (intervals: INTERVAL[]) => (rootPitchMap: IPitchMap): IPitchMap[] => {
+const getChordPitchMaps = (intervals: INTERVAL[]) => (rootPitchMap: IPitchMap): IPitchMap[] => {
   return intervals.map(i => addIntervalToPitchMap(rootPitchMap, i))
 }
-export const getMajorTriadPitchMaps = getChordPitcheMaps([INTERVAL.PERFECT_UNISON, INTERVAL.MAJOR_3RD, INTERVAL.PERFECT_5TH])
-export const getMinorTriadPitchMaps = getChordPitcheMaps([INTERVAL.PERFECT_UNISON, INTERVAL.MINOR_3RD, INTERVAL.PERFECT_5TH])
+export const getMajorTriadPitchMaps = getChordPitchMaps([INTERVAL.PERFECT_UNISON, INTERVAL.MAJOR_3RD, INTERVAL.PERFECT_5TH])
+export const getMinorTriadPitchMaps = getChordPitchMaps([INTERVAL.PERFECT_UNISON, INTERVAL.MINOR_3RD, INTERVAL.PERFECT_5TH])
 
 export const allMajorTriadPitchMaps = pitchMaps.map(pitchMap => getMajorTriadPitchMaps(pitchMap))
 

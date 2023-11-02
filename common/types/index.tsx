@@ -4,7 +4,7 @@ export interface IPitchMap {
   pitch: PITCH;
   notes: NOTE[];
   pitchName: string;
-  preferedNoteName: string;
+  preferredNoteName: string;
   notesName: string[];
   keyAccidental: ACCIDENTAL;
 }

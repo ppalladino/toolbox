@@ -1,51 +1,33 @@
 import { useState, useEffect } from 'react'
 import { IPitchMap } from "@/common/types"
 import { shuffleArray } from '@/common/utils/helpers';
-import { pitchMapsIncludes, togglePitchMap } from "@/common/utils/music-theory"
-
-// export enum DISPLAY_MODE {
-//     PITCH_NAME,
-//     PREFERED_NOTE_NAME,
-//     ALL_NOTE_NAMES
-//   }
+import { pitchMapsIncludes, togglePitchMap, getPitchMapDisplay, PITCH_MAP_DISPLAY_MODE } from "@/common/utils/music-theory"
 
 interface PitchMapPickerProps {
     onChange: (selected:IPitchMap[]) => void; 
     visible: IPitchMap[]; 
     selected: IPitchMap[]; 
-    randomize?: boolean; 
-    // displayMode?: DISPLAY_MODE;
+    displayMode?: PITCH_MAP_DISPLAY_MODE;
+    keyRootPitchMap?: IPitchMap; // only really needed if displayMode = PITCH_MAP_DISPLAY_MODE.KEY_CONTEXTED_NOTE_NAME
 }
 
 export default function PitchMapPicker({
     onChange, 
     visible, 
     selected,
-    randomize = false, 
-    // displayMode =  DISPLAY_MODE.PREFERED_NOTE_NAME
+    displayMode = PITCH_MAP_DISPLAY_MODE.PREFERRED_NOTE_NAME, 
+    keyRootPitchMap
 }: PitchMapPickerProps) {
-    // const [pitchMaps, setPitchMaps] = useState<IPitchMap[]>([...visible])
-    // const [selectedPitchMaps, setSelectedPitchMaps] = useState<IPitchMap[]>([...selected])
-  
-    // useEffect(() => {
-    //     if(randomize) {
-    //         setPitchMaps(shuffleArray(pitchMaps))
-    //     } else {
-    //         setPitchMaps(pitchMaps)
-    //     }
-
-    //   }, [pitchMaps]) 
+    if(displayMode === PITCH_MAP_DISPLAY_MODE.KEY_CONTEXTED_NOTE_NAME && !keyRootPitchMap) {
+        throw new Error('keyRootPitchMap is required when displayMode is PITCH_MAP_DISPLAY_MODE.KEY_CONTEXTED_NOTE_NAME')
+    }
 
     const handleClick = (pitchMap: IPitchMap) => () => {
-        // const selected = togglePitchMap(selectedPitchMaps, pitchMap)
-        // setSelectedPitchMaps(selected)
         onChange(togglePitchMap(selected, pitchMap))
     }
 
     const getKeyClass = (pitchMap: IPitchMap):string => {
         const isSelected = pitchMapsIncludes(selected, pitchMap)
-        // console.log({selectedPitchMaps, pitchMap, isSelected})
-        
         if(isSelected) {
             return 'selected'
         } else {
@@ -60,11 +42,10 @@ export default function PitchMapPicker({
                 return (
                     <button 
                         className={getKeyClass(pm)}
-                        key={pm.preferedNoteName} 
+                        key={pm.preferredNoteName} 
                         onClick={handleClick(pm)}
                     >
-                       {/* {getPitchMapDisplay(displayMode, pm)} */}
-                       {pm.preferedNoteName}
+                       {getPitchMapDisplay(displayMode, pm, keyRootPitchMap)}
                     </button>
                 )
             })

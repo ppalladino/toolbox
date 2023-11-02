@@ -6,7 +6,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <section>
+    <section className='fill'>
       <header>
         <strong>Quizzes:</strong>
         <nav>
