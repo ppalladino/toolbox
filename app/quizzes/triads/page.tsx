@@ -16,7 +16,7 @@ const POOL_STORAGE_KEY = 'quizzes:triads:question-pool'
 export default function TriadsPage() {
   const storedQuestionPool = typeof window !== "undefined" ? window.localStorage.getItem(POOL_STORAGE_KEY) : JSON.stringify([...pitchMaps])
   let initialQuestionPool = storedQuestionPool ? JSON.parse(storedQuestionPool) : [...pitchMaps]
-  initialQuestionPool = initialQuestionPool.length > 0 ? initialQuestionPool : [...pitchMaps]
+  initialQuestionPool = initialQuestionPool && initialQuestionPool.length > 0 ? initialQuestionPool : [...pitchMaps]
  
   const initialQuestion = getRandomElement<IPitchMap>(initialQuestionPool)
 
