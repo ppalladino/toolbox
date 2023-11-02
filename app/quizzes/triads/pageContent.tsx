@@ -14,8 +14,8 @@ interface IAnswer {
 const POOL_STORAGE_KEY = 'quizzes:triads:question-pool'
 
 export default function TriadsPageContent() {
-  const storedQuestionPool = typeof window !== "undefined" ? window.localStorage.getItem(POOL_STORAGE_KEY) : JSON.stringify([...pitchMaps])
-  let initialQuestionPool = storedQuestionPool ? JSON.parse(storedQuestionPool) : [...pitchMaps]
+  const storedQuestionPool = window.localStorage.getItem(POOL_STORAGE_KEY)
+  let initialQuestionPool = storedQuestionPool ? JSON.parse(storedQuestionPool) : []
   initialQuestionPool = initialQuestionPool && initialQuestionPool.length > 0 ? initialQuestionPool : [...pitchMaps]
  
   const initialQuestion = getRandomElement<IPitchMap>(initialQuestionPool)
@@ -30,9 +30,7 @@ export default function TriadsPageContent() {
 
 
   const handleQuestionPoolChange = (pool: IPitchMap[]) => {
-    if(typeof window !== "undefined") {
-      localStorage.setItem(POOL_STORAGE_KEY, JSON.stringify(pool));
-    }
+    localStorage.setItem(POOL_STORAGE_KEY, JSON.stringify(pool));
     setQuestionPool(pool)
   }
 
