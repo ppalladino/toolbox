@@ -60,7 +60,7 @@ export default function TriadsPageContent() {
       </header> 
       <section>
         <p>Number correct: <strong><em>{numCorrect}</em></strong></p>
-        <p>Select the notes in a <strong><em>{question.preferredNoteName} major</em></strong> triad.</p>
+        <p>Select the notes in a <strong><em>{question.preferredNoteName || JSON.stringify(question)} major</em></strong> triad.</p>
         <p>
           {
             showResults ? (
