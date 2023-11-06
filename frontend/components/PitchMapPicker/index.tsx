@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { IPitchMap } from "@/common/types"
 import { shuffleArray } from '@/common/utils/helpers';
-import { pitchMapsIncludes, togglePitchMap, getPitchMapDisplay, PITCH_MAP_DISPLAY_MODE } from "@/common/utils/music-theory"
+import { pitchMapsIncludes, togglePitchMap, getPitchMapDisplay, PITCH_MAP_DISPLAY_MODE } from "@/common/utils/pitch-map"
 
 interface PitchMapPickerProps {
     onChange: (selected:IPitchMap[]) => void; 

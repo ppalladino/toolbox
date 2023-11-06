@@ -17,3 +17,19 @@ export function shuffleArray<T>(arr: T[]):T[] {
     }
     return arrayCopy;
 }
+
+export function arrayIncludes<T>(haystack: T[], needle: T):boolean {
+  return !!haystack.find(e => e === needle)
+}
+
+export function removeElement<T>(haystack: T[], needle: T):T[] {
+  return haystack.filter(e => e !== needle)
+}
+
+export function pushElement<T>(haystack: T[], needle: T):T[] {
+  return arrayIncludes(haystack, needle) ? [...haystack] : [...haystack, ...[needle]]
+}
+
+export function toggleElement<T>(haystack: T[], needle: T):T[] {
+  return arrayIncludes(haystack, needle) ? removeElement(haystack, needle) : pushElement(haystack, needle)
+}

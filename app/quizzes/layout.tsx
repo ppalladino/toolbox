@@ -11,6 +11,8 @@ export default function RootLayout({
         <strong>Quizzes:</strong>
         <nav>
           <Link href="/quizzes/triads">Triads</Link>
+          <Link href="/quizzes/intervals">Intervals</Link>
+          <Link href="/quizzes/circle-of-fifths">Fifths</Link>
         </nav>
       </header>
       {children}

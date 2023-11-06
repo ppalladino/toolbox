@@ -49,6 +49,32 @@ export enum NOTE {
     PERFECT_OCTAVE = 12
   }
 
+  export enum INTERVAL_QUALITY {
+    MAJOR,
+    MINOR,
+    PERFECT,
+    AUGMENTED
+  }
+
+  export enum CHORD_QUALITY {
+    MAJOR,
+    MINOR,
+    AUGMENTED,
+    DIMINISHED
+  }
+
+  export enum SCALE_QUALITY {
+    MAJOR,
+    MINOR, // Natural Minor or Aeolian
+    DORIAN, 
+    PHRYGIAN, 
+    LYDIAN, 
+    MIXOLYDIAN, 
+    LOCRIAN,
+    HARMONIC_MINOR, // Natural Minor with raised 7th
+    MELODIC_MINOR // Asc: Natural Minor with raised 6th and 7th, Desc: Natural Minor
+  }
+
   export enum ACCIDENTAL {
     FLAT = 0,
     NATURAL = 1,

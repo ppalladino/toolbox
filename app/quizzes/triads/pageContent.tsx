@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react'
 import { IPitchMap } from "@/common/types"
-import { pitchMaps, getMajorTriadPitchMaps, pitchMapsAreSimilar, PITCH_MAP_DISPLAY_MODE } from "@/common/utils/music-theory"
+import { chromaticPitches, getMajorTriadPitchMaps, pitchMapsAreSimilar, PITCH_MAP_DISPLAY_MODE } from "@/common/utils/pitch-map"
 import PitchMapPicker from "@/frontend/components/PitchMapPicker"
 import PitchMapResults from '@/frontend/components/PitchMapResults'
 import { getRandomElement, shuffleArray } from '@/common/utils/helpers'
@@ -10,13 +10,13 @@ interface IAnswer {
   correctAnswer: IPitchMap[],
   userAnswer: IPitchMap[]
 }
-
+  
 const POOL_STORAGE_KEY = 'quizzes:triads:question-pool'
 
 export default function TriadsPageContent() {
   const storedQuestionPool = window.localStorage.getItem(POOL_STORAGE_KEY)
   let initialQuestionPool = storedQuestionPool ? JSON.parse(storedQuestionPool) : []
-  initialQuestionPool = initialQuestionPool && initialQuestionPool.length > 0 ? initialQuestionPool : [...pitchMaps]
+  initialQuestionPool = initialQuestionPool && initialQuestionPool.length > 0 ? initialQuestionPool : [...chromaticPitches]
  
   const initialQuestion = getRandomElement<IPitchMap>(initialQuestionPool)
 
@@ -25,7 +25,7 @@ export default function TriadsPageContent() {
   const [correctAnswer, setCorrectAnswer] = useState<IPitchMap[]>(getMajorTriadPitchMaps(initialQuestion))
   const [userAnswer, setUserAnswer] = useState<IPitchMap[]>([])
   const [showResults, setShowResult] = useState<boolean>(false)
-  const [randomOrderedPitchMaps, setRandomOrderedPitchMaps] = useState<IPitchMap[]>(shuffleArray<IPitchMap>(pitchMaps))
+  const [randomOrderedPitchMaps, setRandomOrderedPitchMaps] = useState<IPitchMap[]>(shuffleArray<IPitchMap>(chromaticPitches))
   const [numCorrect, setNumCorrect] = useState<number>(0)
 
 
@@ -46,7 +46,7 @@ export default function TriadsPageContent() {
   const handleNextClick = () => {
     const questionRootPitch = getRandomElement(questionPool)
     const questionTriad = getMajorTriadPitchMaps(questionRootPitch)
-    setRandomOrderedPitchMaps(shuffleArray<IPitchMap>(pitchMaps))
+    setRandomOrderedPitchMaps(shuffleArray<IPitchMap>(chromaticPitches))
     setQuestion(questionRootPitch)
     setUserAnswer([])
     setCorrectAnswer(questionTriad)
@@ -91,7 +91,7 @@ export default function TriadsPageContent() {
         <h2>Settings</h2>
         <p><strong>Triad Bank</strong></p>
         
-        <PitchMapPicker onChange={handleQuestionPoolChange} visible={pitchMaps} selected={questionPool}/>
+        <PitchMapPicker onChange={handleQuestionPoolChange} visible={chromaticPitches} selected={questionPool}/>
       </section>
     </section>
     

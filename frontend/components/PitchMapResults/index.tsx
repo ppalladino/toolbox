@@ -1,5 +1,5 @@
 import { IPitchMap } from "@/common/types"
-import { pitchMapsIncludes, getPitchMapDisplay, PITCH_MAP_DISPLAY_MODE } from "@/common/utils/music-theory"
+import { pitchMapsIncludes, getPitchMapDisplay, PITCH_MAP_DISPLAY_MODE } from "@/common/utils/pitch-map"
 
 interface PitchMapResultsProps {
     visible: IPitchMap[];
