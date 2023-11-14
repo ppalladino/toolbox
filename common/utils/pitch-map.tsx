@@ -9,6 +9,29 @@ export enum PITCH_MAP_DISPLAY_MODE {
   KEY_CONTEXTED_NOTE_NAME
 }
 
+export const pitchMapDisplayModes = [
+  {
+    abbrName: 'pref',
+    mode: PITCH_MAP_DISPLAY_MODE.PREFERRED_NOTE_NAME
+  },
+  {
+    abbrName: '#/b',
+    mode: PITCH_MAP_DISPLAY_MODE.PITCH_NAME
+  },
+  {
+    abbrName: 'b',
+    mode: PITCH_MAP_DISPLAY_MODE.FLATTED_NOTE_NAME
+  },
+  {
+    abbrName: '#',
+    mode: PITCH_MAP_DISPLAY_MODE.SHARPED_NOTE_NAME
+  },
+  {
+    abbrName: 'key',
+    mode: PITCH_MAP_DISPLAY_MODE.KEY_CONTEXTED_NOTE_NAME
+  }
+]
+
 export const pitches = {
     C: {
       pitch: PITCH.C,

@@ -6,6 +6,7 @@ import { allIntervals } from '@/common/utils/interval'
 import PitchMapPicker from "@/frontend/components/PitchMapPicker"
 import PitchMapResults from '@/frontend/components/PitchMapResults'
 import IntervalPicker from '@/frontend/components/IntervalPicker'
+import PitchMapDisplayModePicker from '@/frontend/components/PitchMapDisplayModePicker'
 import { getRandomElement, shuffleArray } from '@/common/utils/helpers'
 
 interface IAnswer {
@@ -15,7 +16,7 @@ interface IAnswer {
   
 const ROOT_PITCH_POOL_STORAGE_KEY = 'quizzes:intervals:root-pitch-pool'
 const INTERVAL_POOL_STORAGE_KEY = 'quizzes:intervals:interval-pool'
-
+const ANSWER_DISPLAY_MODE_STORAGE_KEY = 'quizzes:intervals:answer-display-mode'
 
 export default function IntervalsPageContent() {
   const storedRootPitchPool = window.localStorage.getItem(ROOT_PITCH_POOL_STORAGE_KEY)
@@ -32,13 +33,16 @@ export default function IntervalsPageContent() {
   const initialInterval = getRandomElement<IInterval>(initialIntervalPool)
   const [intervalQuestion, setIntervalQuestion] = useState<IInterval>(initialInterval)
 
+  const storedAnswerDisplayMode = window.localStorage.getItem(ANSWER_DISPLAY_MODE_STORAGE_KEY)
+  let initialAnswerDisplayMode = storedAnswerDisplayMode ? JSON.parse(storedAnswerDisplayMode) : undefined
+  initialAnswerDisplayMode = initialAnswerDisplayMode ? initialAnswerDisplayMode : PITCH_MAP_DISPLAY_MODE.KEY_CONTEXTED_NOTE_NAME
+  const [answerPickerDisplayMode, setAnswerPickerDisplayMode] = useState<PITCH_MAP_DISPLAY_MODE>(initialAnswerDisplayMode)
+
   const [correctAnswer, setCorrectAnswer] = useState<IPitchMap>(addIntervalToPitchMap(initialRootPitch, intervalQuestion.semitones))
   const [userAnswer, setUserAnswer] = useState<IPitchMap>()
   const [showResults, setShowResult] = useState<boolean>(false)
   const [randomOrderedPitchMaps, setRandomOrderedPitchMaps] = useState<IPitchMap[]>(shuffleArray<IPitchMap>(chromaticPitches))
   const [numCorrect, setNumCorrect] = useState<number>(0)
-  const [answerPickerDisplayMode, setAnswerPickerDisplayMode] = useState<PITCH_MAP_DISPLAY_MODE>(PITCH_MAP_DISPLAY_MODE.FLATTED_NOTE_NAME)
-
 
   const handleQuestionPoolChange = (pool: IPitchMap[]) => {
     localStorage.setItem(ROOT_PITCH_POOL_STORAGE_KEY, JSON.stringify(pool));
@@ -52,6 +56,11 @@ export default function IntervalsPageContent() {
 
   const handleUserAnswerChange = (answer: IPitchMap[]) => {
     setUserAnswer(answer[0])
+  }
+
+  const handleAnswerDisplayModeChange = (mode: PITCH_MAP_DISPLAY_MODE) => {
+    setAnswerPickerDisplayMode(mode)
+    localStorage.setItem(ANSWER_DISPLAY_MODE_STORAGE_KEY, JSON.stringify(mode));
   }
 
   const handleSubmitClick = () => {
@@ -70,9 +79,9 @@ export default function IntervalsPageContent() {
     const nextCorrectAnswer = addIntervalToPitchMap(nextRootPitchQuestion, nextIntervalQuestion.semitones)
     setCorrectAnswer(nextCorrectAnswer)
 
-    const nextAnswerPickerDisplayMode = answerPickerDisplayMode === PITCH_MAP_DISPLAY_MODE.SHARPED_NOTE_NAME 
-      ? PITCH_MAP_DISPLAY_MODE.FLATTED_NOTE_NAME : PITCH_MAP_DISPLAY_MODE.SHARPED_NOTE_NAME
-    setAnswerPickerDisplayMode(nextAnswerPickerDisplayMode)
+    // const nextAnswerPickerDisplayMode = answerPickerDisplayMode === PITCH_MAP_DISPLAY_MODE.SHARPED_NOTE_NAME 
+    //   ? PITCH_MAP_DISPLAY_MODE.FLATTED_NOTE_NAME : PITCH_MAP_DISPLAY_MODE.SHARPED_NOTE_NAME
+    // setAnswerPickerDisplayMode(nextAnswerPickerDisplayMode)
     setUserAnswer(undefined)
     setShowResult(false)
   }
@@ -117,6 +126,8 @@ export default function IntervalsPageContent() {
         <PitchMapPicker onChange={handleQuestionPoolChange} visible={chromaticPitches} selected={rootPitchPool}/>
         <p>interval question bank</p>
         <IntervalPicker onChange={handleIntervalPoolChange} visible={allIntervals} selected={intervalPool}/>
+        <p>answer display mode</p>
+        <PitchMapDisplayModePicker selected={answerPickerDisplayMode} onChange={handleAnswerDisplayModeChange}/>
       </section>
     </section>
     

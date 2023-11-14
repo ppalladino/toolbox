@@ -261,3 +261,63 @@ section.cta-row {
 section.cta-row button{
   margin-right: 10px;
 }
+
+.c {
+  background-color: #137fe0ff;
+  color: white
+}
+
+.d-flat {
+  background-color: #cd9fe8ff;
+  color: black;
+}
+
+.d {
+  background-color: #810ccfff;
+  color: white;
+}
+
+.e_flat {
+  background-color: #b7b7b7ff;
+  color: black
+}
+
+.e {
+  background-color: #434343ff;
+  color: white;
+}
+
+.f {
+  background-color: #783f04ff;
+  color: white;
+}
+
+.g_flat {
+  background-color: #ffd1d1ff;
+  color: black;
+}
+
+.g {
+  background-color: #ff4600ff;
+  color: white;
+}
+
+.a_flat {
+  background-color: #fefbcdff;
+  color: black;
+}
+
+.a {
+  background-color: #fceb08ff;
+  color: #bbb;
+}
+
+.b_flat {
+  background-color: #cdeba7ff;
+  color: black;
+}
+
+.b {
+  background-color: #3da21fff;
+  color: white;
+}
